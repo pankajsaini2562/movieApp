@@ -60,8 +60,9 @@ If Hive is used for local storage, run:
 flutter packages pub run build_runner build
 
 5. Clean and run the app
-flutter clean
-flutter pub get
+
+flutter clean   /n
+flutter pub get    /n
 flutter run
 
 
