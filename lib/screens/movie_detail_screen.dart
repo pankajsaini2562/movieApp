@@ -50,45 +50,91 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
           final movie = snapshot.data!;
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 300,
-                  width: double.infinity,
-                  color: Colors.grey[200],
-                  child: movie.poster.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: movie.poster,
-                          fit: BoxFit.cover,
-                          placeholder: (_, __) =>
-                              const Center(child: CircularProgressIndicator()),
-                          errorWidget: (_, __, ___) => const Center(
-                            child: Icon(Icons.broken_image, size: 50),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Poster with rounded corners and shadow
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      height: 300,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
                           ),
-                        )
-                      : const Center(child: Icon(Icons.movie, size: 50)),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  movie.title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                        ],
+                      ),
+                      child: movie.poster.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: movie.poster,
+                              fit: BoxFit.cover,
+                              placeholder: (_, __) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (_, __, ___) => const Center(
+                                child: Icon(Icons.broken_image, size: 50),
+                              ),
+                            )
+                          : const Center(child: Icon(Icons.movie, size: 50)),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Year: ${movie.year}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
+                  const SizedBox(height: 16),
+
+                  // Movie title
+                  Text(
+                    movie.title,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(movie.plot, style: const TextStyle(fontSize: 16)),
-              ],
+                  const SizedBox(height: 8),
+
+                  // Movie year
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.calendar_today,
+                        size: 18,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        movie.year,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Movie plot inside a card
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                    color: Colors.grey[100],
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        movie.plot,
+                        style: const TextStyle(fontSize: 16, height: 1.5),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
